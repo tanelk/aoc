@@ -1,8 +1,8 @@
+use itertools::Itertools;
 use std::env;
 use std::fs::File;
-use std::io::BufReader;
 use std::io::BufRead;
-use itertools::Itertools;
+use std::io::BufReader;
 
 fn main() -> std::io::Result<()> {
     let path = env::current_dir()?.join("src/bin/y2015d5/input.txt");
@@ -38,10 +38,12 @@ fn is_nice(s: &str) -> bool {
 }
 
 fn is_nice2(s: &str) -> bool {
-    let has_double_pair = s.chars()
-        .tuple_windows()
-        .enumerate()
-        .any(|(i, (a, b))| s.chars().tuple_windows().skip(i+2).any(|(a2, b2)| a == a2 && b == b2));
+    let has_double_pair = s.chars().tuple_windows().enumerate().any(|(i, (a, b))| {
+        s.chars()
+            .tuple_windows()
+            .skip(i + 2)
+            .any(|(a2, b2)| a == a2 && b == b2)
+    });
 
     let repeats_w_gap = s.chars().tuple_windows().any(|(a, _, b)| a == b);
 

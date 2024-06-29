@@ -26,14 +26,13 @@ fn q1(contents: &str) -> usize {
             'v' => y -= 1,
             '>' => x += 1,
             '<' => x -= 1,
-            _ => panic!("Invalid direction: {}", direction)
+            _ => panic!("Invalid direction: {}", direction),
         }
         visited.insert((x, y));
     }
 
     visited.len()
 }
-
 
 fn q2(contents: &str) -> usize {
     let mut visited = std::collections::HashSet::new();
@@ -59,7 +58,7 @@ fn q2(contents: &str) -> usize {
             'v' => *y -= 1,
             '>' => *x += 1,
             '<' => *x -= 1,
-            _ => panic!("Invalid direction: {}", direction)
+            _ => panic!("Invalid direction: {}", direction),
         }
         visited.insert((*x, *y));
     }

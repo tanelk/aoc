@@ -1,7 +1,7 @@
 use std::env;
 use std::fs::File;
-use std::io::BufReader;
 use std::io::BufRead;
+use std::io::BufReader;
 
 fn main() -> std::io::Result<()> {
     let path = env::current_dir()?.join("src/bin/y2015d2/input.txt");
@@ -12,7 +12,10 @@ fn main() -> std::io::Result<()> {
 
     for line in reader.lines() {
         let line = line?;
-        let parsed = line.split('x').map(|x| x.parse::<i32>().unwrap()).collect::<Vec<i32>>();
+        let parsed = line
+            .split('x')
+            .map(|x| x.parse::<i32>().unwrap())
+            .collect::<Vec<i32>>();
 
         match parsed.as_slice() {
             [l, w, h] => {
@@ -27,9 +30,8 @@ fn main() -> std::io::Result<()> {
                 let bow = l * w * h;
 
                 total_ribbon += ribbon + bow;
-
-            },
-            _ => println!("Invalid line: {}", line)
+            }
+            _ => println!("Invalid line: {}", line),
         }
     }
 
