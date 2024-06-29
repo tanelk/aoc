@@ -7,8 +7,9 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ffc9bbc-a0e0-465a-aed5-6a95e303fcfb" name="Changes" comment="2015 d3">
-      <change afterPath="$PROJECT_DIR$/src/bin/y2015d4/main.rs" afterDir="false" />
+    <list default="true" id="0ffc9bbc-a0e0-465a-aed5-6a95e303fcfb" name="Changes" comment="2015 d4">
+      <change afterPath="$PROJECT_DIR$/src/bin/y2015d5/input.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bin/y2015d5/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
@@ -47,6 +48,7 @@
     &quot;Cargo.Run y2015d2.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Run y2015d3.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Run y2015d4.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run y2015d5.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
     &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
@@ -72,7 +74,7 @@
       <recent name="$PROJECT_DIR$/src/bin" />
     </key>
   </component>
-  <component name="RunManager" selected="Cargo.Run y2015d4">
+  <component name="RunManager" selected="Cargo.Run y2015d5">
     <configuration name="Run y2015d1" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="command" value="run --package aoc --bin y2015d1" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -124,8 +126,8 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="run" />
+    <configuration name="Run y2015d5" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="run --package aoc --bin y2015d5" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -143,6 +145,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Run y2015d5" />
         <item itemvalue="Cargo.Run y2015d4" />
         <item itemvalue="Cargo.Run y2015d2" />
         <item itemvalue="Cargo.Run y2015d1" />
@@ -160,7 +163,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1719660579216</updated>
-      <workItem from="1719660580277" duration="7566000" />
+      <workItem from="1719660580277" duration="10356000" />
+      <workItem from="1719676424379" duration="504000" />
     </task>
     <task id="LOCAL-00001" summary="2015 d1">
       <option name="closed" value="true" />
@@ -194,7 +198,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719670486741</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="2015 d4">
+      <option name="closed" value="true" />
+      <created>1719672832126</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1719672832126</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,6 +216,7 @@
     <MESSAGE value="2015 d1" />
     <MESSAGE value="2015 d2" />
     <MESSAGE value="2015 d3" />
-    <option name="LAST_COMMIT_MESSAGE" value="2015 d3" />
+    <MESSAGE value="2015 d4" />
+    <option name="LAST_COMMIT_MESSAGE" value="2015 d4" />
   </component>
 </project>
