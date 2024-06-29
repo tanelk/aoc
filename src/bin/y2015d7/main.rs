@@ -1,4 +1,3 @@
-use crate::Operation::Literal;
 use anyhow::Result;
 use std::collections::HashMap;
 use std::env;
@@ -29,7 +28,7 @@ fn main() -> Result<()> {
     println!("Result in 'a': {}", res);
 
     // Part2
-    operations.insert("b".to_string(), Literal(res));
+    operations.insert("b".to_string(), Operation::Literal(res));
     let res = evaluate(
         operations
             .get("a")
@@ -109,7 +108,7 @@ impl FromStr for Assignment {
         let parts: Vec<&str> = s.split(" -> ").collect();
 
         if parts.len() != 2 {
-            return Err(anyhow::anyhow!(format!("Invalid assignment: {}", s)));
+            anyhow::bail!("Invalid assignment: {}", s);
         }
 
         let target = parts[1].to_string();
@@ -138,7 +137,7 @@ impl FromStr for Operation {
                     let operation = parts[1].parse()?;
                     Ok(Operation::Not(Box::new(operation)))
                 } else {
-                    Err(anyhow::anyhow!(format!("Invalid operation: {}", s)))
+                    anyhow::bail!("Invalid operation: {}", s)
                 }
             }
             3 => {
@@ -156,10 +155,10 @@ impl FromStr for Operation {
                         Box::new(operation1),
                         Box::new(operation2),
                     )),
-                    _ => Err(anyhow::anyhow!(format!("Invalid operation: {}", s))),
+                    _ => anyhow::bail!("Invalid operation: {}", s),
                 }
             }
-            _ => Err(anyhow::anyhow!(format!("Invalid operation: {}", s))),
+            _ => anyhow::bail!("Invalid operation: {}", s),
         }
     }
 }
