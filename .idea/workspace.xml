@@ -7,9 +7,9 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ffc9bbc-a0e0-465a-aed5-6a95e303fcfb" name="Changes" comment="2015 d1">
-      <change afterPath="$PROJECT_DIR$/src/bin/y2015d2/input.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/bin/y2015d2/main.rs" afterDir="false" />
+    <list default="true" id="0ffc9bbc-a0e0-465a-aed5-6a95e303fcfb" name="Changes" comment="2015 d2">
+      <change afterPath="$PROJECT_DIR$/src/bin/y2015d3/input.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bin/y2015d3/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +44,7 @@
     &quot;Cargo.Run aoc.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Run y2015d1.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Run y2015d2.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run y2015d3.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
     &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
@@ -55,6 +56,7 @@
     &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
     &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
     &quot;org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d2/main.rs&quot;: &quot;true&quot;,
+    &quot;org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d3/main.rs&quot;: &quot;true&quot;,
     &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;
   }
 }</component>
@@ -137,7 +139,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1719660579216</updated>
-      <workItem from="1719660580277" duration="3826000" />
+      <workItem from="1719660580277" duration="5294000" />
     </task>
     <task id="LOCAL-00001" summary="2015 d1">
       <option name="closed" value="true" />
@@ -147,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719662776206</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="2015 d2">
+      <option name="closed" value="true" />
+      <created>1719664788010</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1719664788010</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,6 +165,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="2015 d1" />
-    <option name="LAST_COMMIT_MESSAGE" value="2015 d1" />
+    <MESSAGE value="2015 d2" />
+    <option name="LAST_COMMIT_MESSAGE" value="2015 d2" />
   </component>
 </project>
