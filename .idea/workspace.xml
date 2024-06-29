@@ -7,12 +7,10 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ffc9bbc-a0e0-465a-aed5-6a95e303fcfb" name="Changes" comment="2015 d4">
-      <change afterPath="$PROJECT_DIR$/src/bin/y2015d5/input.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/bin/y2015d5/main.rs" afterDir="false" />
+    <list default="true" id="0ffc9bbc-a0e0-465a-aed5-6a95e303fcfb" name="Changes" comment="2015 d5">
+      <change afterPath="$PROJECT_DIR$/src/bin/y2015d6/input.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/bin/y2015d6/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,31 +38,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Cargo.Run 2015d1.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run aoc.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run y2015d1.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run y2015d2.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run y2015d3.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run y2015d4.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run y2015d5.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/kasutaja/git/aoc/src/bin&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d2/main.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d3/main.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d4/main.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Cargo.Run 2015d1.executor": "Run",
+    "Cargo.Run aoc.executor": "Run",
+    "Cargo.Run y2015d1.executor": "Run",
+    "Cargo.Run y2015d2.executor": "Run",
+    "Cargo.Run y2015d3.executor": "Run",
+    "Cargo.Run y2015d4.executor": "Run",
+    "Cargo.Run y2015d5.executor": "Run",
+    "Cargo.Run y2015d6.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/kasutaja/git/aoc/src/bin",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d2/main.rs": "true",
+    "org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d3/main.rs": "true",
+    "org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d4/main.rs": "true",
+    "org.rust.disableDetachedFileInspection/home/kasutaja/git/aoc/src/bin/y2015d6/main.rs": "true",
+    "org.rust.first.attach.projects": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/bin" />
@@ -74,7 +74,7 @@
       <recent name="$PROJECT_DIR$/src/bin" />
     </key>
   </component>
-  <component name="RunManager" selected="Cargo.Run y2015d5">
+  <component name="RunManager" selected="Cargo.Run y2015d6">
     <configuration name="Run y2015d1" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="command" value="run --package aoc --bin y2015d1" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -143,8 +143,26 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Run y2015d6" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="run --package aoc --bin y2015d6" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Run y2015d6" />
         <item itemvalue="Cargo.Run y2015d5" />
         <item itemvalue="Cargo.Run y2015d4" />
         <item itemvalue="Cargo.Run y2015d2" />
@@ -164,7 +182,7 @@
       <option name="presentableId" value="Default" />
       <updated>1719660579216</updated>
       <workItem from="1719660580277" duration="10356000" />
-      <workItem from="1719676424379" duration="504000" />
+      <workItem from="1719676424379" duration="4314000" />
     </task>
     <task id="LOCAL-00001" summary="2015 d1">
       <option name="closed" value="true" />
@@ -206,7 +224,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719672832126</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="2015 d5">
+      <option name="closed" value="true" />
+      <created>1719676952026</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1719676952026</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,6 +243,7 @@
     <MESSAGE value="2015 d2" />
     <MESSAGE value="2015 d3" />
     <MESSAGE value="2015 d4" />
-    <option name="LAST_COMMIT_MESSAGE" value="2015 d4" />
+    <MESSAGE value="2015 d5" />
+    <option name="LAST_COMMIT_MESSAGE" value="2015 d5" />
   </component>
 </project>
