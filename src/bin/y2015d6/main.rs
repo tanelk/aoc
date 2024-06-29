@@ -123,3 +123,19 @@ impl FromStr for Instruction {
         })
     }
 }
+
+impl FromStr for Operation {
+    type Err = std::io::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "turnon" => Ok(Operation::TurnOn),
+            "turnoff" => Ok(Operation::TurnOff),
+            "toggle" => Ok(Operation::Toggle),
+            _ => Err(Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Invalid operation",
+            )),
+        }
+    }
+}
