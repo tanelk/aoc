@@ -35,7 +35,6 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-
 fn count_symbols(s: &str) -> usize {
     let mut chars = s.chars();
     let mut count = 0;
@@ -49,11 +48,11 @@ fn count_symbols(s: &str) -> usize {
                     Some('x') => {
                         chars.next();
                         chars.next();
-                    },
+                    }
                     Some(_) => (),
                     None => (),
                 }
-            },
+            }
             _ => count += 1,
         }
     }
@@ -62,7 +61,7 @@ fn count_symbols(s: &str) -> usize {
 }
 
 fn encode(s: &str) -> String {
-    let mut encoded = String::with_capacity(2*s.len());
+    let mut encoded = String::with_capacity(2 * s.len());
     encoded.push('"');
 
     for c in s.chars() {
