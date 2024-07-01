@@ -1,42 +1,35 @@
 use std::env;
 use std::fs::File;
-use std::io::BufRead;
-use std::io::BufReader;
+use std::io::Read;
+
+use serde_json::Value;
 
 fn main() -> std::io::Result<()> {
-    let path = env::current_dir()?.join("src/bin/y2015d2/input.txt");
-    let reader = BufReader::new(File::open(path)?);
+    let path = env::current_dir()?.join("src/bin/y2015d12/input.txt");
+    let mut contents = String::new();
+    File::open(path)?.read_to_string(&mut contents)?;
 
-    let mut total_area = 0;
-    let mut total_ribbon = 0;
+    let v: Value = serde_json::from_str(&contents)?;
 
-    for line in reader.lines() {
-        let line = line?;
-        let parsed = line
-            .split('x')
-            .map(|x| x.parse::<i32>().unwrap())
-            .collect::<Vec<i32>>();
-
-        match parsed.as_slice() {
-            [l, w, h] => {
-                let lw = l * w;
-                let wh = w * h;
-                let hl = h * l;
-                let extra = lw.min(wh).min(hl);
-                let area = 2 * (lw + wh + hl) + extra;
-                total_area += area;
-
-                let ribbon = 2 * (l + w + h - l.max(w).max(h));
-                let bow = l * w * h;
-
-                total_ribbon += ribbon + bow;
-            }
-            _ => println!("Invalid line: {}", line),
-        }
-    }
-
-    println!("Total area: {}", total_area);
-    println!("Total ribbon: {}", total_ribbon);
+    println!("{}", sum_json(&v));
 
     Ok(())
+}
+
+fn sum_json(v: &Value) -> i64 {
+    match v {
+        Value::Number(number) => number.as_i64().unwrap(),
+        Value::Array(array) => array.iter().map(sum_json).sum(),
+        Value::Object(object) => {
+            if object
+                .values()
+                .any(|v| v.as_str().is_some_and(|s| s == "red"))
+            {
+                0
+            } else {
+                object.values().map(sum_json).sum()
+            }
+        }
+        _ => 0,
+    }
 }
