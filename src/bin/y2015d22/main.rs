@@ -59,7 +59,11 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn players_turn(mut player: Character, mut boss: Character, active_spells: Vec<Spell>) -> Option<i32> {
+fn players_turn(
+    mut player: Character,
+    mut boss: Character,
+    active_spells: Vec<Spell>,
+) -> Option<i32> {
     // hard mode
     player.hp -= 1;
     if player.hp <= 0 {
@@ -76,30 +80,35 @@ fn players_turn(mut player: Character, mut boss: Character, active_spells: Vec<S
 
     for spell in SPELLS {
         if active_spells.iter().any(|s| s.t == spell.t) {
-            continue
+            continue;
         }
 
         if spell.cost > player.mana {
-            continue
+            continue;
         }
 
-        let mut cloned_player = player.clone();
+        let mut cloned_player = player;
         cloned_player.mana -= spell.cost;
 
         let mut new_active_spells = active_spells.clone();
-        new_active_spells.push(spell.clone());
+        new_active_spells.push(spell);
 
-        let cost = bosses_turn(cloned_player, boss.clone(), new_active_spells).map(|cost| cost + spell.cost);
+        let cost = bosses_turn(cloned_player, boss, new_active_spells)
+            .map(|cost| cost + spell.cost);
         min_cost = match (min_cost, cost) {
             (Some(a), Some(b)) => Some(a.min(b)),
-            (a, b) => a.or(b)
+            (a, b) => a.or(b),
         }
     }
 
     min_cost
 }
 
-fn bosses_turn(mut player: Character, mut boss: Character, active_spells: Vec<Spell>) -> Option<i32> {
+fn bosses_turn(
+    mut player: Character,
+    mut boss: Character,
+    active_spells: Vec<Spell>,
+) -> Option<i32> {
     player.armor = 0;
 
     let active_spells: Vec<Spell> = activate_spells(&mut player, &mut boss, active_spells);
@@ -111,13 +120,17 @@ fn bosses_turn(mut player: Character, mut boss: Character, active_spells: Vec<Sp
     player.hp -= (boss.damage - player.armor).max(1);
 
     if player.hp <= 0 {
-        return None
+        return None;
     }
 
     players_turn(player, boss, active_spells)
 }
 
-fn activate_spells(player: &mut Character, boss: &mut Character, active_spells: Vec<Spell>) -> Vec<Spell> {
+fn activate_spells(
+    player: &mut Character,
+    boss: &mut Character,
+    active_spells: Vec<Spell>,
+) -> Vec<Spell> {
     active_spells
         .into_iter()
         .map(|s| {
