@@ -5,7 +5,6 @@ use std::io::BufRead;
 use std::io::BufReader;
 
 use anyhow::Result;
-use itertools::Itertools;
 use regex::Regex;
 
 fn main() -> Result<()> {
@@ -30,7 +29,7 @@ fn main() -> Result<()> {
 
         replacements
             .entry(captures[1].to_string())
-            .or_insert_with(|| Vec::new())
+            .or_insert_with(Vec::new)
             .push(captures[2].to_string());
     }
 
@@ -43,12 +42,11 @@ fn main() -> Result<()> {
 
     // Brute force solution of calling the replacement step until we reach the target molecule is too slow
 
-
     Ok(())
 }
 
 fn run_replacement_step(
-    starting_molecule: &String,
+    starting_molecule: &str,
     replacements: &HashMap<String, Vec<String>>,
     new_molecules: &mut HashSet<String>,
 ) {
@@ -56,8 +54,8 @@ fn run_replacement_step(
         let klen = k.chars().count();
         for (index, _) in starting_molecule.match_indices(k) {
             for v in vs {
-                let mut clone = starting_molecule.clone();
-                clone.replace_range(index..index + klen, &v);
+                let mut clone = starting_molecule.to_owned();
+                clone.replace_range(index..index + klen, v);
 
                 new_molecules.insert(clone);
             }
