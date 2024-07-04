@@ -32,8 +32,6 @@ fn main() -> Result<()> {
         Item::defensive(0, 0),
     ];
 
-
-
     let cheapest = iproduct!(weapons, armors, rings.iter().combinations(2))
         .map(|(w, a, rs)| {
             let mut res = w;
