@@ -93,8 +93,8 @@ fn players_turn(
         let mut new_active_spells = active_spells.clone();
         new_active_spells.push(spell);
 
-        let cost = bosses_turn(cloned_player, boss, new_active_spells)
-            .map(|cost| cost + spell.cost);
+        let cost =
+            bosses_turn(cloned_player, boss, new_active_spells).map(|cost| cost + spell.cost);
         min_cost = match (min_cost, cost) {
             (Some(a), Some(b)) => Some(a.min(b)),
             (a, b) => a.or(b),
