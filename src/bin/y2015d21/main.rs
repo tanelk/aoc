@@ -1,8 +1,7 @@
-use std::iter;
 use std::ops::AddAssign;
 
 use anyhow::Result;
-use itertools::Itertools;
+use itertools::{iproduct, Itertools};
 
 fn main() -> Result<()> {
     let weapons = [
@@ -18,6 +17,8 @@ fn main() -> Result<()> {
         Item::defensive(53, 3),
         Item::defensive(75, 4),
         Item::defensive(102, 5),
+        // Could be no armor
+        Item::defensive(0, 0),
     ];
     let rings = [
         Item::offensive(25, 1),
@@ -26,29 +27,20 @@ fn main() -> Result<()> {
         Item::defensive(20, 1),
         Item::defensive(40, 2),
         Item::defensive(80, 3),
+        // Could be no rings
+        Item::offensive(0, 0),
+        Item::defensive(0, 0),
     ];
 
-    // Must pick 1 weapon, 0 or 1 armor and 0-2 rings
-    let armors_iter = armors.iter().map(Some).chain(iter::once(None));
-    let rings_iter = rings
-        .iter()
-        .map(Some)
-        .chain(iter::once(None))
-        .chain(iter::once(None))
-        .combinations(2);
 
-    let cheapest = weapons
-        .iter()
-        .cartesian_product(armors_iter)
-        .cartesian_product(rings_iter)
-        .map(|((w, a), r)| {
-            let mut res = *w;
 
-            if let Some(a) = a {
-                res += *a;
-            }
+    let cheapest = iproduct!(weapons, armors, rings.iter().combinations(2))
+        .map(|(w, a, rs)| {
+            let mut res = w;
 
-            r.into_iter().flatten().for_each(|r| {
+            res += a;
+
+            rs.into_iter().for_each(|r| {
                 res += *r;
             });
 
