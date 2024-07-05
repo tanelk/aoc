@@ -40,7 +40,31 @@ fn main() -> Result<()> {
 
     println!("Calibration value: {}", new_molecules.len());
 
-    // Brute force solution of calling the replacement step until we reach the target molecule is too slow
+    // Part 2 - TODO this is not a general solution and can fail on some runs
+    let reverse_replacements = replacements
+        .iter()
+        .flat_map(|(k, vs)| vs.iter().map(move |v| (v.clone(), k.clone())))
+        .collect::<Vec<(String, String)>>();
+
+    let mut steps = 0;
+    let mut current_molecule = target_molecule.clone();
+    while current_molecule != "e" {
+        let mut found = false;
+        for (k, v) in &reverse_replacements {
+            if current_molecule.contains(k) {
+                current_molecule = current_molecule.replacen(k, v, 1);
+                steps += 1;
+                found = true;
+                break;
+            }
+        }
+
+        if !found {
+            panic!("No replacement found for {}", current_molecule);
+        }
+    }
+
+    println!("Steps to make medicine: {}", steps);
 
     Ok(())
 }
