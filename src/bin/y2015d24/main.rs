@@ -51,10 +51,7 @@ fn find_best_subset(candidates: &[i32], target_weight: i32) -> Option<Vec<i32>> 
         match (when_skipped, when_picked) {
             (Some(a), Some(b)) => {
                 // prefer smaller subsets and among them the ones with the smallest product.
-                let a_len = a.len();
-                let b_len = b.len();
-
-                match a_len.cmp(&b_len) {
+                match a.len().cmp(&b.len()) {
                     Ordering::Less => Some(a),
                     Ordering::Greater => Some(b),
                     Ordering::Equal => {
@@ -62,6 +59,7 @@ fn find_best_subset(candidates: &[i32], target_weight: i32) -> Option<Vec<i32>> 
                         let a_prod: i64 = a.iter().map(|&i| i as i64).product();
                         let b_prod: i64 = b.iter().map(|&i| i as i64).product();
 
+                        // Don't care if they are equal
                         if a_prod < b_prod {
                             Some(a)
                         } else {
