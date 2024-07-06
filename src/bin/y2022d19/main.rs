@@ -57,12 +57,20 @@ fn maximize_geodes(time_remaining: i32, blueprint: &Blueprint) -> i32 {
     let mut resources = HashMap::new();
     resources.insert(Geode, 0);
 
+    let mut max_costs = HashMap::new();
+    max_costs.insert(Ore, blueprint.robots.iter().map(|r| r.cost_ore).max().unwrap());
+    max_costs.insert(Clay, blueprint.robots.iter().map(|r| r.cost_clay).max().unwrap());
+    max_costs.insert(Obsidian, blueprint.robots.iter().map(|r| r.cost_obsidian).max().unwrap());
+    max_costs.insert(Geode, i32::MAX);
+
     run_iteration(
         time_remaining,
         blueprint,
         &robots,
         &resources,
         HashSet::new(),
+        -1,
+        &max_costs,
     )
 }
 
@@ -71,34 +79,47 @@ fn run_iteration(
     blueprint: &Blueprint,
     robots: &HashMap<Resource, i32>,
     resources: &HashMap<Resource, i32>,
+    // Optimization heuristics
     mut skipped: HashSet<Resource>,
+    max_geodes_so_far: i32,
+    max_costs: &HashMap<Resource, i32>
 ) -> i32 {
     if time_remaining <= 0 {
         return *resources.get(&Geode).unwrap_or(&0);
     }
+
+    // Branch pruning heuristics:
+    // 1) Keep track of best result seen so far
+    // 2) There is no reason to skip, if you can build all robots
+    // 3) If you skipped robot X on prev turn, then you should skip it this turn
+
+    let upper_limit = {
+        // Buy one geode robot each minute
+        let current = *robots.get(&Geode).unwrap_or(&0);
+        (current + current + time_remaining) * (1 + time_remaining) / 2
+    };
+    if upper_limit <= max_geodes_so_far {
+        return -1;
+    }
+
+    let mut max_geodes = 0;
+    let mut consider_skipping = false;
 
     let mut resources_after = resources.clone();
     for (r, c) in robots {
         *resources_after.entry(*r).or_insert(0) += c;
     }
 
-    // Branch pruning heuristics:
-    // 1) There is no reason to skip, if you can build all robots
-    // 2) If you skipped robot X on prev turn, then you should skip it this turn
-
-    let mut max_geodes = 0;
-    let mut consider_skipping = false;
-
     // Build a robot
-    for bp in &blueprint.robots {
+    for robot in &blueprint.robots {
         // can build is based on resources at the start, not at the end of the turn
-        let can_build = *resources.get(&Ore).unwrap_or(&0) >= bp.cost_ore
-            && *resources.get(&Clay).unwrap_or(&0) >= bp.cost_clay
-            && *resources.get(&Obsidian).unwrap_or(&0) >= bp.cost_obsidian;
+        let can_build = *resources.get(&Ore).unwrap_or(&0) >= robot.cost_ore
+            && *resources.get(&Clay).unwrap_or(&0) >= robot.cost_clay
+            && *resources.get(&Obsidian).unwrap_or(&0) >= robot.cost_obsidian;
 
-        let could_build_after_skipping = ((bp.cost_clay == 0)
+        let could_build_after_skipping = ((robot.cost_clay == 0)
             || *robots.get(&Clay).unwrap_or(&0) > 0)
-            && ((bp.cost_obsidian == 0) || *robots.get(&Obsidian).unwrap_or(&0) > 0);
+            && ((robot.cost_obsidian == 0) || *robots.get(&Obsidian).unwrap_or(&0) > 0);
 
         consider_skipping |= !can_build && could_build_after_skipping;
 
@@ -106,17 +127,22 @@ fn run_iteration(
             continue;
         }
 
-        if !skipped.insert(bp.produces) {
+        // Do we have enough of this robot?
+        if robots.get(&robot.produces).unwrap_or(&0) >= max_costs.get(&robot.produces).unwrap() {
+            continue;
+        }
+
+        if !skipped.insert(robot.produces) {
             continue;
         }
 
         let mut robots_after = robots.clone();
-        *robots_after.entry(bp.produces).or_insert(0) += 1;
+        *robots_after.entry(robot.produces).or_insert(0) += 1;
 
         let mut resources_after = resources_after.clone();
-        *resources_after.entry(Ore).or_insert(0) -= bp.cost_ore;
-        *resources_after.entry(Clay).or_insert(0) -= bp.cost_clay;
-        *resources_after.entry(Obsidian).or_insert(0) -= bp.cost_obsidian;
+        *resources_after.entry(Ore).or_insert(0) -= robot.cost_ore;
+        *resources_after.entry(Clay).or_insert(0) -= robot.cost_clay;
+        *resources_after.entry(Obsidian).or_insert(0) -= robot.cost_obsidian;
 
         max_geodes = run_iteration(
             time_remaining - 1,
@@ -125,6 +151,8 @@ fn run_iteration(
             &resources_after,
             // Reset all skipped after building a robot
             HashSet::new(),
+            max_geodes,
+            max_costs,
         )
         .max(max_geodes);
     }
@@ -137,6 +165,8 @@ fn run_iteration(
             robots,
             &resources_after,
             skipped,
+            max_geodes,
+            max_costs,
         )
         .max(max_geodes);
     }
@@ -205,6 +235,9 @@ impl FromStr for Blueprint {
                 cost_obsidian: captures["gb"].parse()?,
             },
         ];
+
+        // "High-tech" ones in front, for better branch pruning
+        let robots = robots.into_iter().rev().collect();
 
         Ok(Blueprint { id, robots })
     }
