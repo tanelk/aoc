@@ -199,22 +199,30 @@ enum Tile {
     Door(u8),
 }
 
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[derive(Debug, Copy, Clone)]
 struct State<T> {
     pos: T,
     keys: u32,
     steps: u32,
 }
 
-impl<T: Ord> Ord for State<T> {
+impl<T> Ord for State<T> {
     /// This is a reversed ordering, so that the BinaryHeap will be a min-heap
     fn cmp(&self, other: &Self) -> Ordering {
         other.steps.cmp(&self.steps)
     }
 }
 
-impl<T: PartialOrd + Ord> PartialOrd for State<T> {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+impl<T> PartialOrd for State<T> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
+
+impl<T> PartialEq for State<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.steps == other.steps
+    }
+}
+
+impl<T> Eq for State<T> {}
