@@ -58,9 +58,23 @@ fn maximize_geodes(time_remaining: i32, blueprint: &Blueprint) -> i32 {
     resources.insert(Geode, 0);
 
     let mut max_costs = HashMap::new();
-    max_costs.insert(Ore, blueprint.robots.iter().map(|r| r.cost_ore).max().unwrap());
-    max_costs.insert(Clay, blueprint.robots.iter().map(|r| r.cost_clay).max().unwrap());
-    max_costs.insert(Obsidian, blueprint.robots.iter().map(|r| r.cost_obsidian).max().unwrap());
+    max_costs.insert(
+        Ore,
+        blueprint.robots.iter().map(|r| r.cost_ore).max().unwrap(),
+    );
+    max_costs.insert(
+        Clay,
+        blueprint.robots.iter().map(|r| r.cost_clay).max().unwrap(),
+    );
+    max_costs.insert(
+        Obsidian,
+        blueprint
+            .robots
+            .iter()
+            .map(|r| r.cost_obsidian)
+            .max()
+            .unwrap(),
+    );
     max_costs.insert(Geode, i32::MAX);
 
     run_iteration(
@@ -82,7 +96,7 @@ fn run_iteration(
     // Optimization heuristics
     mut skipped: HashSet<Resource>,
     max_geodes_so_far: i32,
-    max_costs: &HashMap<Resource, i32>
+    max_costs: &HashMap<Resource, i32>,
 ) -> i32 {
     if time_remaining <= 0 {
         return *resources.get(&Geode).unwrap_or(&0);
