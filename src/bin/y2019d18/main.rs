@@ -4,7 +4,7 @@ use std::env;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
-
+use std::time::Instant;
 use anyhow::Result;
 
 fn main() -> Result<()> {
@@ -46,8 +46,13 @@ fn main() -> Result<()> {
         .filter(|t| matches!(t, Tile::Key(_)))
         .count();
 
+    let instant = Instant::now();
     part1(&maze, start, key_count);
+    println!("Time elapsed is: {:?}", instant.elapsed());
+
+    let instant = Instant::now();
     part2(&maze, start, key_count);
+    println!("Time elapsed is: {:?}", instant.elapsed());
 
     Ok(())
 }
