@@ -217,12 +217,7 @@ fn directly_reachable(maze: &Maze, pos: Pos) -> Vec<(Pos, u32)> {
     result
 }
 
-fn reachable_keys(
-    maze: &Maze,
-    index: &MazeIndex,
-    pos: Pos,
-    keys: u32,
-) -> Vec<(u32, Pos, u32)> {
+fn reachable_keys(maze: &Maze, index: &MazeIndex, pos: Pos, keys: u32) -> Vec<(u32, Pos, u32)> {
     let mut visited = HashSet::new();
     let mut queue = BinaryHeap::new();
     queue.push(State {

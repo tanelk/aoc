@@ -3,6 +3,9 @@ name = "aoc"
 version = "0.1.0"
 edition = "2021"
 
+[profile.release]
+debug = true
+
 [dependencies]
 md5 = "0.7.0"
 itertools = "0.13.0"
