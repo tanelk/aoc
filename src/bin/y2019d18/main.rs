@@ -1,11 +1,12 @@
+use anyhow::Result;
 use std::cmp::Ordering;
-use std::collections::{BinaryHeap, HashSet, VecDeque};
+use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
 use std::env;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::time::Instant;
-use anyhow::Result;
+use std::borrow::Borrow;
 
 fn main() -> Result<()> {
     let path = env::current_dir()?.join("src/bin/y2019d18/input.txt");
@@ -58,6 +59,8 @@ fn main() -> Result<()> {
 }
 
 fn part1(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
+    let index = index_maze(maze);
+
     // (pos, keys) pairs
     let mut visited = HashSet::new();
     let mut queue = BinaryHeap::new();
@@ -79,7 +82,7 @@ fn part1(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
 
         visited.insert((pos, keys));
 
-        for (extra_steps, pos, keys) in reachable_keys(maze, pos, keys) {
+        for (extra_steps, pos, keys) in reachable_keys(maze, &index, pos, keys) {
             queue.push(State {
                 pos,
                 keys,
@@ -88,6 +91,7 @@ fn part1(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
         }
     }
 }
+
 
 fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
     let mut maze = maze.to_owned();
@@ -101,6 +105,9 @@ fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
     maze[i + 1][j - 1] = Tile::Start;
     maze[i - 1][j + 1] = Tile::Start;
     maze[i - 1][j - 1] = Tile::Start;
+
+    let index = index_maze(&maze);
+
 
     let pos = vec![
         (i + 1, j + 1),
@@ -131,7 +138,7 @@ fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
 
             visited.insert((partial_pos, keys));
 
-            for (extra_steps, partial_pos, keys) in reachable_keys(&maze, partial_pos, keys) {
+            for (extra_steps, partial_pos, keys) in reachable_keys(&maze, &index, partial_pos, keys) {
                 let mut pos = pos.clone();
                 pos[i] = partial_pos;
 
@@ -145,14 +152,43 @@ fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
     }
 }
 
-fn reachable_keys(
-    maze: &[Vec<Tile>],
-    pos: (usize, usize),
-    keys: u32,
-) -> Vec<(u32, (usize, usize), u32)> {
+
+
+/// For each key, door and start location find the shortest paths to all other keys and doors,
+/// that are directly reachable from that location.
+fn index_maze(maze: &[Vec<Tile>]) -> HashMap<(usize, usize), Vec<((usize, usize), u32)>> {
+    let mut index = HashMap::new();
+
+    for i in 0..maze.len() {
+        for j in 0..maze[i].len() {
+            match maze[i][j] {
+                Tile::Key(_) => {
+                    index.insert((i, j), directly_reachable(maze, (i, j)));
+                }
+                Tile::Door(_) => {
+                    index.insert((i, j), directly_reachable(maze, (i, j)));
+                }
+                Tile::Start => {
+                    index.insert((i, j), directly_reachable(maze, (i, j)));
+                }
+                _ => {}
+            }
+        }
+    }
+
+    index
+}
+
+fn directly_reachable(maze: &[Vec<Tile>], pos: (usize, usize)) -> Vec<((usize, usize), u32)> {
     let mut visited = vec![vec![false; maze[0].len()]; maze.len()];
     let mut queue = VecDeque::new();
-    queue.push_back((pos, 0));
+
+    let (i, j) = pos;
+    visited[i][j] = true;
+    queue.push_back(((i + 1, j), 1));
+    queue.push_back(((i - 1, j), 1));
+    queue.push_back(((i, j + 1), 1));
+    queue.push_back(((i, j - 1), 1));
 
     let mut result = Vec::new();
 
@@ -171,23 +207,8 @@ fn reachable_keys(
                 queue.push_back(((i, j + 1), steps + 1));
                 queue.push_back(((i, j - 1), steps + 1));
             }
-            Tile::Key(k) => {
-                if keys & (1 << k) == 0 {
-                    result.push((steps, pos, keys | (1 << k)));
-                } else {
-                    queue.push_back(((i + 1, j), steps + 1));
-                    queue.push_back(((i - 1, j), steps + 1));
-                    queue.push_back(((i, j + 1), steps + 1));
-                    queue.push_back(((i, j - 1), steps + 1));
-                }
-            }
-            Tile::Door(d) => {
-                if keys & (1 << d) != 0 {
-                    queue.push_back(((i + 1, j), steps + 1));
-                    queue.push_back(((i - 1, j), steps + 1));
-                    queue.push_back(((i, j + 1), steps + 1));
-                    queue.push_back(((i, j - 1), steps + 1));
-                }
+            Tile::Key(_) | Tile::Door(_) => {
+                result.push((pos, steps));
             }
         }
     }
@@ -195,7 +216,61 @@ fn reachable_keys(
     result
 }
 
-#[derive(Debug, Copy, Clone)]
+fn reachable_keys(
+    maze: &[Vec<Tile>],
+    index: &HashMap<(usize, usize), Vec<((usize, usize), u32)>>,
+    pos: (usize, usize),
+    keys: u32,
+) -> Vec<(u32, (usize, usize), u32)> {
+    let mut visited = HashSet::new();
+    let mut queue = BinaryHeap::new();
+    queue.push(State {
+        pos,
+        keys,
+        steps: 0,
+    });
+
+    let mut result = Vec::new();
+
+    while let Some(State { pos, keys, steps }) = queue.pop() {
+        if visited.contains(pos.borrow()) {
+            continue;
+        }
+        visited.insert(pos);
+
+        for (next_pos, extra_steps) in index.get(&pos).unwrap() {
+            match maze[next_pos.0][next_pos.1] {
+                Tile::Key(k) => {
+                    let has_key = keys & (1 << k) != 0;
+                    if has_key {
+                        queue.push(State {
+                            pos: *next_pos,
+                            keys,
+                            steps: steps + extra_steps,
+                        });
+                    } else {
+                        result.push((steps + extra_steps, *next_pos, keys | (1 << k)));
+                    }
+                }
+                Tile::Door(d) => {
+                    let has_key = keys & (1 << d) != 0;
+                    if has_key {
+                        queue.push(State {
+                            pos: *next_pos,
+                            keys,
+                            steps: steps + extra_steps,
+                        });
+                    }
+                }
+                _ => unreachable!()
+            }
+        }
+    }
+
+    result
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 enum Tile {
     Start,
     Wall,
