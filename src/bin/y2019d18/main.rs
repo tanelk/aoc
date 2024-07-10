@@ -1,4 +1,5 @@
 use anyhow::Result;
+use std::borrow::Borrow;
 use std::cmp::Ordering;
 use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
 use std::env;
@@ -6,13 +7,16 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::time::Instant;
-use std::borrow::Borrow;
+
+type Pos = (usize, usize);
+type Maze = Vec<Vec<Tile>>;
+type MazeIndex = HashMap<Pos, Vec<(Pos, u32)>>;
 
 fn main() -> Result<()> {
     let path = env::current_dir()?.join("src/bin/y2019d18/input.txt");
     let reader = BufReader::new(File::open(path)?);
 
-    let maze: Vec<Vec<Tile>> = reader
+    let maze: Maze = reader
         .lines()
         .map(|l| {
             let l = l.unwrap();
@@ -29,7 +33,7 @@ fn main() -> Result<()> {
         })
         .collect();
 
-    let start = maze
+    let start: Pos = maze
         .iter()
         .enumerate()
         .flat_map(|(i, row)| {
@@ -58,7 +62,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn part1(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
+fn part1(maze: &Maze, start: Pos, key_count: usize) {
     let index = index_maze(maze);
 
     // (pos, keys) pairs
@@ -92,8 +96,7 @@ fn part1(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
     }
 }
 
-
-fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
+fn part2(maze: &Maze, start: Pos, key_count: usize) {
     let mut maze = maze.to_owned();
     let (i, j) = start;
     maze[i][j] = Tile::Wall;
@@ -107,7 +110,6 @@ fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
     maze[i - 1][j - 1] = Tile::Start;
 
     let index = index_maze(&maze);
-
 
     let pos = vec![
         (i + 1, j + 1),
@@ -138,7 +140,8 @@ fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
 
             visited.insert((partial_pos, keys));
 
-            for (extra_steps, partial_pos, keys) in reachable_keys(&maze, &index, partial_pos, keys) {
+            for (extra_steps, partial_pos, keys) in reachable_keys(&maze, &index, partial_pos, keys)
+            {
                 let mut pos = pos.clone();
                 pos[i] = partial_pos;
 
@@ -152,11 +155,9 @@ fn part2(maze: &[Vec<Tile>], start: (usize, usize), key_count: usize) {
     }
 }
 
-
-
 /// For each key, door and start location find the shortest paths to all other keys and doors,
 /// that are directly reachable from that location.
-fn index_maze(maze: &[Vec<Tile>]) -> HashMap<(usize, usize), Vec<((usize, usize), u32)>> {
+fn index_maze(maze: &Maze) -> MazeIndex {
     let mut index = HashMap::new();
 
     for i in 0..maze.len() {
@@ -179,7 +180,7 @@ fn index_maze(maze: &[Vec<Tile>]) -> HashMap<(usize, usize), Vec<((usize, usize)
     index
 }
 
-fn directly_reachable(maze: &[Vec<Tile>], pos: (usize, usize)) -> Vec<((usize, usize), u32)> {
+fn directly_reachable(maze: &Maze, pos: Pos) -> Vec<(Pos, u32)> {
     let mut visited = vec![vec![false; maze[0].len()]; maze.len()];
     let mut queue = VecDeque::new();
 
@@ -217,11 +218,11 @@ fn directly_reachable(maze: &[Vec<Tile>], pos: (usize, usize)) -> Vec<((usize, u
 }
 
 fn reachable_keys(
-    maze: &[Vec<Tile>],
-    index: &HashMap<(usize, usize), Vec<((usize, usize), u32)>>,
-    pos: (usize, usize),
+    maze: &Maze,
+    index: &MazeIndex,
+    pos: Pos,
     keys: u32,
-) -> Vec<(u32, (usize, usize), u32)> {
+) -> Vec<(u32, Pos, u32)> {
     let mut visited = HashSet::new();
     let mut queue = BinaryHeap::new();
     queue.push(State {
@@ -262,7 +263,7 @@ fn reachable_keys(
                         });
                     }
                 }
-                _ => unreachable!()
+                _ => unreachable!(),
             }
         }
     }
