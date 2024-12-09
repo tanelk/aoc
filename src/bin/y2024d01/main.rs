@@ -1,9 +1,9 @@
+use itertools::Itertools;
 use std::env;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::str::FromStr;
-use itertools::Itertools;
 
 fn main() -> std::io::Result<()> {
     let path = env::current_dir()?.join("src/bin/y2024d01/input.txt");
@@ -25,17 +25,22 @@ fn main() -> std::io::Result<()> {
     left.sort();
     right.sort();
 
-    let res: i32 = left.iter().zip(right.iter()).map(|(a, b)| {
-        (*a - *b).abs()
-    }).sum();
+    let res: i32 = left
+        .iter()
+        .zip(right.iter())
+        .map(|(a, b)| (*a - *b).abs())
+        .sum();
 
     println!("{}", res);
 
     let counts = right.iter().counts();
-    let res: i32 = left.iter().map(|n| {
-        let count = counts.get(n).unwrap_or(&0);
-        *n * (*count as i32)
-    }).sum();
+    let res: i32 = left
+        .iter()
+        .map(|n| {
+            let count = counts.get(n).unwrap_or(&0);
+            *n * (*count as i32)
+        })
+        .sum();
 
     println!("{}", res);
 
