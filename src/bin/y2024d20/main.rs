@@ -109,8 +109,8 @@ fn distances_from(start: Pos, maze: &Maze) -> HashMap<Pos, usize> {
                 continue;
             }
 
-            if !distances.contains_key(&neighbor) {
-                distances.insert(neighbor, dist + 1);
+            if let std::collections::hash_map::Entry::Vacant(e) = distances.entry(neighbor) {
+                e.insert(dist + 1);
                 queue.push_back(neighbor);
             }
         }

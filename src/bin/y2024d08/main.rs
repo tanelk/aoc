@@ -4,7 +4,6 @@ use std::env;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
-use std::str::FromStr;
 
 fn main() -> std::io::Result<()> {
     let path = env::current_dir()?.join("src/bin/y2024d08/input.txt");
@@ -26,7 +25,7 @@ fn main() -> std::io::Result<()> {
 
             antennas
                 .entry(c)
-                .or_insert(Vec::new())
+                .or_default()
                 .push((x as i32, y as i32));
         }
     }
