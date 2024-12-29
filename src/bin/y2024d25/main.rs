@@ -1,6 +1,5 @@
 use anyhow::Result;
 use itertools::Itertools;
-use std::collections::{HashMap, HashSet};
 use std::env;
 use std::fs::File;
 use std::io::BufRead;
@@ -48,10 +47,10 @@ fn process_block(block: &mut Vec<[char; 5]>, keys: &mut Vec<[u8; 5]>, locks: &mu
     assert_eq!(block.len(), 7);
 
     if block[0] == ['#', '#', '#', '#', '#'] {
-        locks.push(count_pins(&block));
+        locks.push(count_pins(block));
     } else if block[6] == ['#', '#', '#', '#', '#'] {
         block.reverse();
-        keys.push(count_pins(&block));
+        keys.push(count_pins(block));
     } else {
         unreachable!("invalid block");
     }
@@ -76,6 +75,6 @@ fn count_pins(block: &Vec<[char; 5]>) -> [u8; 5] {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    
 
 }
